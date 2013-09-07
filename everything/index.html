@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+    <script type="text/javascript" src="/cbg-improved.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+</head>
+<body>
+    <div id="viz"></div>
+    <script type="text/javascript">
+        var court_w = 940;
+        var court_h = 500;
+        var scale = 10;
+
+        function getBallX(index){
+            return data[index].ball[0] * scale; 
+        }
+        function getBallY(index){
+            return data[index].ball[1] * scale; 
+        }
+        function getBallZ(index){
+            return data[index].ball[2] * scale; 
+        }
+
+        var sampleSVG = d3.select("#viz")
+        .append("svg")
+        .attr("width", court_w)
+        .attr("height", court_h)    
+        .style("border", "5px solid red");
+
+    sampleSVG.append("circle")
+        .style("stroke", "gray")
+        .style("fill", "black")
+        .attr("r", 10)
+        .attr("cx", getBallX(0))
+        .attr("cy", getBallY(0))
+        .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
+        .on("mouseout", function(){d3.select(this).style("fill", "white");});
+    
+</script>
+<script>
+  $(function() {
+    var timer = null;
+    $( "#slider" ).slider({
+        range: "min",
+      min: 0,
+      max: data.length - 1,
+      value: 0,
+    });
+    $("#slider").on("slidechange", function(event, ui){
+        sampleSVG.select("circle")
+        .attr("cx",getBallX(ui.value))
+        .attr("cy",getBallY(ui.value))
+    })
+    $("#start").click(function(){
+        if($(this).attr("value") == "start"){
+            $(this).attr("value", "stop");
+            var sli = $(this);
+            timer = setInterval(function() {
+                var value = $( "#slider" ).slider( "option", "value" );
+                if(value == data.length - 1){
+                    clearInterval(timer);
+                    sli.attr("value", "start");
+                }
+                else
+                    $("#slider").slider("option", "value", value+1);
+            }, 40);
+        }else{
+            $(this).attr("value", "start");
+            clearInterval(timer); 
+
+        }
+    })
+});
+</script>
+</head>
+<body>
+<div id="slider"></div>
+<input type="button" name="" value="start" id="start">
+</body>
+</html>
