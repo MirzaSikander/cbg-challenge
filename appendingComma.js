@@ -4,13 +4,8 @@ fs.readFile('cbg-basketball.json', format);
 function format(err, data){
 	if(err) throw err;
     var array = data.toString().split("\n");
-    var j = array.length - 1;
-    for(var i = 0; i < j; i++) {
-    	var temp = array[i] + ",";
-    	array[i] = array[j] + ",";
-    	array[j] = temp;
-    	j--;
-    	console.log(i +" "+ j);
+    for(var i = 0; i < array.length; i++) {
+    	array[i] = array[i] + ",";
     }
     var newData = array.join("\n");
     fs.writeFile('cbg-improved.js',newData, function(){
