@@ -126,7 +126,8 @@
             var $entry = $('<li index="'+shot_frames[i]+'">'+time.toLocaleTimeString()+'</li>');
             $entry.click(function(){
                 $("#slider").slider("option", "value", parseInt($(this).attr("index")));
-                $("#list li").css("background-color", "rgb(250, 180, 51)").prop("selected","false");
+                $("#list li").css("background-color", "rgb(250, 180, 51)").prop("selected","false")
+                    .css("color","white");
                 $(this).css("background-color", "rgb(233, 217, 217)");
                 $(this).prop("selected","true");
             })
