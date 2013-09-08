@@ -28,21 +28,21 @@
             var array = new Array(14)
             array[0] = [ getBallX(index), getBallY(index), getBallZ(index)];
 
-            array[1] = [ data[index].home[0][0][0] * scale, data[index].home[0][0][1] * scale ];
-            array[2] = [ data[index].home[1][0][0] * scale, data[index].home[1][0][1] * scale ];
-            array[3] = [ data[index].home[2][0][0] * scale, data[index].home[2][0][1] * scale ];
-            array[4] = [ data[index].home[3][0][0] * scale, data[index].home[3][0][1] * scale ];
-            array[5] = [ data[index].home[4][0][0] * scale, data[index].home[4][0][1] * scale ];
+            array[1] = [ data[index].home[0][0][0] * scale, data[index].home[0][0][1] * scale, data[index].home[0][1]];
+            array[2] = [ data[index].home[1][0][0] * scale, data[index].home[1][0][1] * scale, data[index].home[1][1]];
+            array[3] = [ data[index].home[2][0][0] * scale, data[index].home[2][0][1] * scale, data[index].home[2][1]];
+            array[4] = [ data[index].home[3][0][0] * scale, data[index].home[3][0][1] * scale, data[index].home[3][1]];
+            array[5] = [ data[index].home[4][0][0] * scale, data[index].home[4][0][1] * scale, data[index].home[4][1]];
 
-            array[6] = [ data[index].away[0][0][0] * scale, data[index].away[0][0][1] * scale ];
-            array[7] = [ data[index].away[1][0][0] * scale, data[index].away[1][0][1] * scale ];
-            array[8] = [ data[index].away[2][0][0] * scale, data[index].away[2][0][1] * scale ];
-            array[9] = [ data[index].away[3][0][0] * scale, data[index].away[3][0][1] * scale ];
-            array[10] =[ data[index].away[4][0][0] * scale, data[index].away[4][0][1] * scale ];
+            array[6] = [ data[index].away[0][0][0] * scale, data[index].away[0][0][1] * scale, data[index].away[0][1]];
+            array[7] = [ data[index].away[1][0][0] * scale, data[index].away[1][0][1] * scale, data[index].away[1][1]];
+            array[8] = [ data[index].away[2][0][0] * scale, data[index].away[2][0][1] * scale, data[index].away[2][1]];
+            array[9] = [ data[index].away[3][0][0] * scale, data[index].away[3][0][1] * scale, data[index].away[3][1]];
+            array[10] =[ data[index].away[4][0][0] * scale, data[index].away[4][0][1] * scale, data[index].away[4][1]];
 
-            array[11] =[ data[index].refs[0][0][0] * scale, data[index].refs[0][0][1] * scale ];
-            array[12] =[ data[index].refs[1][0][0] * scale, data[index].refs[1][0][1] * scale ];
-            array[13] =[ data[index].refs[2][0][0] * scale, data[index].refs[2][0][1] * scale ];
+            array[11] =[ data[index].refs[0][0][0] * scale, data[index].refs[0][0][1] * scale, data[index].refs[0][1]];
+            array[12] =[ data[index].refs[1][0][0] * scale, data[index].refs[1][0][1] * scale, data[index].refs[1][1]];
+            array[13] =[ data[index].refs[2][0][0] * scale, data[index].refs[2][0][1] * scale, data[index].refs[2][1]];
             return array;
         }
         var sampleSVG = d3.select("#viz")
@@ -62,7 +62,8 @@
         sampleSVG.append("text")
         .attr("x", state[0][0])
         .attr("y", state[0][1])
-        .text(state[0][2]/2);
+        .text(state[0][2]/2)
+        .style("font-size","20px");
 
         var i;
         for(i = 0; i < 5; i++){
@@ -71,6 +72,13 @@
             .attr("r",15)
             .attr("cx", state[i + 1][0])
             .attr("cy", state[i + 1][1])
+
+            sampleSVG.append("text")
+            .attr("x", state[i + 1][0] - 20)
+            .attr("y", state[i + 1][1])
+            .text(state[i + 1][2])
+            .attr("fill", "orange")
+            .style("font-size", "15px");
         }
         for(i = 0; i < 5; i++){
             sampleSVG.append("circle")
@@ -78,6 +86,13 @@
             .attr("r",15)
             .attr("cx", state[i + 6][0])
             .attr("cy", state[i + 6][1])
+
+            sampleSVG.append("text")
+            .attr("x", state[i + 6][0] - 20)
+            .attr("y", state[i + 6][1])
+            .text(state[i + 6][2])
+            .attr("fill", "brown")
+            .style("font-size", "15px");
         }
         for(i = 0; i < 3; i++){
             sampleSVG.append("circle")
@@ -85,6 +100,13 @@
             .attr("r",15)
             .attr("cx", state[i + 11][0])
             .attr("cy", state[i + 11][1])
+
+            sampleSVG.append("text")
+            .attr("x", state[i + 11][0] - 20)
+            .attr("y", state[i + 11][1])
+            .text(state[i + 11][2])
+            .attr("fill", "lightgrey")
+            .style("font-size", "15px");
         }
 
     </script>
@@ -131,15 +153,17 @@
                     return d[2];
                 else
                     return 15;
-            })
-            sampleSVG.select("text").data(state)
-            .attr("x", function(d){return d[0];})
-            .attr("y", function(d){return d[1];})
+            });
+            sampleSVG.selectAll("text").data(state)
+            .attr("x", function(d, i){console.log(i + " "+d[0]); return d[0] - 20;})
+            .attr("y", function(d, i){console.log(i + " "+d[1]); return d[1];})
             .text(function(d,i){
                 if(i == 0){
-                    return d[2]/2
+                    return d[2]/2;
                 }
-            })
+                else
+                    return d[2];
+            });
 
         })
         $("#start").click(function(){
