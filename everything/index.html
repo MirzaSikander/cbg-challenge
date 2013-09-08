@@ -49,7 +49,7 @@
         .append("svg")
         .attr("width", court_w)
         .attr("height", court_h)    
-        .style("border", "3px solid black");
+        .style("background-image","url('background.jpeg')");
 
         var state = getState(0); 
 
@@ -122,23 +122,24 @@
         //fill in the list of frames where a shot was made
         var shot_frames = findShots();
         for(var i = 0; i < shot_frames.length; i++){
-            $entry = $("<li>"+shot_frames[i]+"</li>");
+            var time = new Date(data[shot_frames[i]].time);
+            var $entry = $('<li index="'+shot_frames[i]+'">'+time.toLocaleTimeString()+'</li>');
             $entry.click(function(){
-                    $("#slider").slider("option", "value", parseInt($(this).html()));
-                    $("#list li").css("background-color", "white").prop("selected","false");
-                    $(this).css("background-color", "orange");
-                    $(this).prop("selected","true");
-                })
-                .mouseover(function(){
-                    $(this).css("background-color","lightblue").css("color","white");
-                })
-                .mouseout(function(){
-                    if($(this).prop("selected") == "true"){
-                        $(this).css("background-color","orange").css("color","black");
-                    }
-                    else
-                        $(this).css("background-color","white").css("color","black");
-                });
+                $("#slider").slider("option", "value", parseInt($(this).attr("index")));
+                $("#list li").css("background-color", "rgb(250, 180, 51)").prop("selected","false");
+                $(this).css("background-color", "rgb(233, 217, 217)");
+                $(this).prop("selected","true");
+            })
+            .mouseover(function(){
+                $(this).css("background-color","lightblue").css("color","white");
+            })
+            .mouseout(function(){
+                if($(this).prop("selected") == "true"){
+                    $(this).css("background-color","rgb(233, 217, 217)").css("color","black");
+                }
+                else
+                    $(this).css("background-color","rgb(250, 180, 51)").css("color","white");
+            });
             $("#list").append($entry);
         }
         $("#slider").on("slidechange", function(event, ui){
@@ -167,20 +168,20 @@
 
         })
         $("#start").click(function(){
-            if($(this).attr("value") == "start"){
-                $(this).attr("value", "stop");
+            if($(this).html() == "Start"){
+                $(this).html("Stop");
                 var but = $(this);
                 timer = setInterval(function() {
                     var value = $( "#slider" ).slider( "option", "value" );
                     if(value == data.length - 1){
                         clearInterval(timer);
-                       but.attr("value", "start");
+                        but.html("Start");
                     }
                     else
                         $("#slider").slider("option", "value", value+1);
                 }, 40);
             }else{
-                $(this).attr("value", "start");
+                $(this).html("start");
                 clearInterval(timer); 
             }
         })
@@ -188,35 +189,87 @@
     });
 </script>
 <style type="text/css" media="screen">
+    body{
+        background-color: #f5f5f5;
+    }
     #list{
-        width: 100px;
+        width: 150px;
         height: 500px;
         overflow: scroll;
         position: absolute;
-        left: 960px;
-        top: 10px;
-        border: 3px grey solid;
+        left: 950px;
+        top: 8px;
         list-style-type: none;
         padding: 0;
-        margin: 0; 
-        background-color: silver;
+        margin: 0;
+        background-color: rgb(252, 239, 199);
     }
     #list li{
         margin: 5px;
-        border: 3px black solid;
         list-style-type: none;
-        background-color: white;
+        background-color: rgb(250, 180, 51);
+        color: white;
+        padding: 10px;
     }
     #slider{
-        width: 940px;
-        margin-top: 10px;
+        width: 900px;
+        margin: 20px;
+        margin-top: 33px;
+        float: left;
+    }
+    .button {
+        -moz-box-shadow:inset 0px 1px 0px 0px #f5978e;
+        -webkit-box-shadow:inset 0px 1px 0px 0px #f5978e;
+        box-shadow:inset 0px 1px 0px 0px #f5978e;
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f24537), color-stop(1, #c62d1f) );
+        background:-moz-linear-gradient( center top, #f24537 5%, #c62d1f 100% );
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f24537', endColorstr='#c62d1f');
+        background-color:#f24537;
+        -webkit-border-top-left-radius:8px;
+        -moz-border-radius-topleft:8px;
+        border-top-left-radius:8px;
+        -webkit-border-top-right-radius:8px;
+        -moz-border-radius-topright:8px;
+        border-top-right-radius:8px;
+        -webkit-border-bottom-right-radius:8px;
+        -moz-border-radius-bottomright:8px;
+        border-bottom-right-radius:8px;
+        -webkit-border-bottom-left-radius:8px;
+        -moz-border-radius-bottomleft:8px;
+        border-bottom-left-radius:8px;
+        text-indent:0;
+        border:1px solid #d02718;
+        display:inline-block;
+        color:#ffffff;
+        font-family:Arial;
+        font-size:15px;
+        font-weight:bold;
+        font-style:normal;
+        height:28px;
+        line-height:28px;
+        width:80px;
+        text-decoration:none;
+        text-align:center;
+        text-shadow:1px 1px 0px #810e05;
+        margin: 25px;
+    }
+    .button:hover {
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #c62d1f), color-stop(1, #f24537) );
+        background:-moz-linear-gradient( center top, #c62d1f 5%, #f24537 100% );
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#c62d1f', endColorstr='#f24537');
+        background-color:#c62d1f;
+    }.button:active {
+        position:relative;
+        top:1px;
     }
 </style>
 </head>
 <body>
     <ul id="list">
     </ul>
-    <div id="slider" style="width:940px" ></div>
-    <input type="button" name="" value="start" id="start">
+    <div style="background-color: rgb(233, 217, 217); width: 1090px; border-bottom-right-radius: 50px;">
+        <div id="slider"></div>
+        <a href="#" id="start" class="button">Start</a>
+    </div>
 </body>
 </html>
