@@ -33,8 +33,16 @@ function findShots(){
 					for(var another_ballz = ballz; another_ballz > 5; j-- ){
 						 another_ballz = data[j].ball[2] 
 					}
-					if(shot_frames.indexOf(j) < 0)
-						shot_frames.push(j)
+					if(shot_frames.indexOf(j) < 0){
+						//need to check if the direction is towards the basket
+						//creating two vectors
+						var v1 = [ ballx - data[j].ball[0], bally - data[j].ball[1] ];
+						// (5.3, 25) is the location of the rim 
+						var v2 = [ 5.3 - data[j].ball[0], 25 - data[j].ball[1] ];
+
+						if(calculateAngle(v1, v2) < 0.785398163)
+							shot_frames.push(j)
+					}
 				}
 			}
 		}
@@ -49,12 +57,24 @@ function findShots(){
 					for(var another_ballz = ballz; another_ballz > 5; j-- ){
 						 another_ballz = data[j].ball[2] 
 					}
-					if(shot_frames.indexOf(j) < 0)
-						shot_frames.push(j)
+					if(shot_frames.indexOf(j) < 0){
+						//need to check if the direction is towards the basket
+						//creating two vectors
+						var v1 = [ ballx - data[j].ball[0], bally - data[j].ball[1] ];
+						// (94 - 5.3, 25) is the location of the rim on the other side
+						var v2 = [ 94 - 5.3 - data[j].ball[0], 25 - data[j].ball[1] ];
+
+						if(calculateAngle(v1, v2) < 0.785398163)
+							shot_frames.push(j)
+					}
 				}
 			}
 		}
 
 	}
 	return shot_frames;
+}
+
+function calculateAngle(v1, v2){
+	return Math.acos( (v1[0] * v2[0] + v1[1] * v2[1]) / (Math.sqrt(Math.pow(v1[0],2)+Math.pow(v1[1],2)) * Math.sqrt(Math.pow(v2[0],2)+Math.pow(v2[1],2))));
 }

@@ -103,12 +103,19 @@
             $entry = $("<li>"+shot_frames[i]+"</li>");
             $entry.click(function(){
                     $("#slider").slider("option", "value", parseInt($(this).html()));
+                    $("#list li").css("background-color", "white").prop("selected","false");
+                    $(this).css("background-color", "orange");
+                    $(this).prop("selected","true");
                 })
                 .mouseover(function(){
                     $(this).css("background-color","lightblue").css("color","white");
                 })
                 .mouseout(function(){
-                    $(this).css("background-color","white").css("color","black");
+                    if($(this).prop("selected") == "true"){
+                        $(this).css("background-color","orange").css("color","black");
+                    }
+                    else
+                        $(this).css("background-color","white").css("color","black");
                 });
             $("#list").append($entry);
         }
