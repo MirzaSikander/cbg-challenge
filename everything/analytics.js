@@ -1,7 +1,7 @@
 var bbDim = {
-	width: 16, //y
-	height: 2, //z
-	length: 19 //x
+	width: 40, //y
+	height: 10, //z
+	length: 40 //x
 }
 var bbZ = 10;
 var boundbox1 = {

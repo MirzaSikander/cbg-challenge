@@ -145,6 +145,7 @@
         }
         $("#slider").on("slidechange", function(event, ui){
             var state = getState(ui.value);
+            $("#frameInfo").html(ui.value);
 
             sampleSVG.selectAll("circle")
             .data(state)
@@ -182,7 +183,7 @@
                         $("#slider").slider("option", "value", value+1);
                 }, 40);
             }else{
-                $(this).html("start");
+                $(this).html("Start");
                 clearInterval(timer); 
             }
         })
@@ -272,5 +273,6 @@
         <div id="slider"></div>
         <a href="#" id="start" class="button">Start</a>
     </div>
+    <div id="frameInfo" style="display:none">0</div>
 </body>
 </html>
