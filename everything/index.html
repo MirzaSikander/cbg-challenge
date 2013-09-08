@@ -3,6 +3,7 @@
 <head>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
     <script type="text/javascript" src="/cbg-improved.js"></script>
+    <script type="text/javascript" src="/analytics.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -26,16 +27,19 @@
         function getState(index){
             var array = new Array(14)
             array[0] = [ getBallX(index), getBallY(index), getBallZ(index)];
+
             array[1] = [ data[index].home[0][0][0] * scale, data[index].home[0][0][1] * scale ];
-            array[2] = [ data[index].home[1][0][0] * scale, data[index].home[1][0][1] * scale];
+            array[2] = [ data[index].home[1][0][0] * scale, data[index].home[1][0][1] * scale ];
             array[3] = [ data[index].home[2][0][0] * scale, data[index].home[2][0][1] * scale ];
             array[4] = [ data[index].home[3][0][0] * scale, data[index].home[3][0][1] * scale ];
             array[5] = [ data[index].home[4][0][0] * scale, data[index].home[4][0][1] * scale ];
+
             array[6] = [ data[index].away[0][0][0] * scale, data[index].away[0][0][1] * scale ];
             array[7] = [ data[index].away[1][0][0] * scale, data[index].away[1][0][1] * scale ];
             array[8] = [ data[index].away[2][0][0] * scale, data[index].away[2][0][1] * scale ];
             array[9] = [ data[index].away[3][0][0] * scale, data[index].away[3][0][1] * scale ];
-            array[10] =[ data[index].away[4][0][0] * scale, data[index].away[2][0][1] * scale ];
+            array[10] =[ data[index].away[4][0][0] * scale, data[index].away[4][0][1] * scale ];
+
             array[11] =[ data[index].refs[0][0][0] * scale, data[index].refs[0][0][1] * scale ];
             array[12] =[ data[index].refs[1][0][0] * scale, data[index].refs[1][0][1] * scale ];
             array[13] =[ data[index].refs[2][0][0] * scale, data[index].refs[2][0][1] * scale ];
@@ -45,94 +49,143 @@
         .append("svg")
         .attr("width", court_w)
         .attr("height", court_h)    
-        .style("border", "5px solid red");
+        .style("border", "3px solid black");
 
-    var state = getState(0); 
+        var state = getState(0); 
 
-    sampleSVG.append("circle")
+        sampleSVG.append("circle")
         .style("stroke", "gray")
         .style("fill", "orange")
         .attr("cx", state[0][0])
         .attr("cy", state[0][1])
         .attr("r", state[0][2]) 
-        .text(state[0][2]/2)
-    var i;
-    for(i = 0; i < 5; i++){
-        sampleSVG.append("circle")
-        .style("stroke","red").style("fill","blue")
-        .attr("r",15)
-        .attr("cx", state[0][i + 1])
-        .attr("cy", state[0][i + 1])
-    }
-    for(i = 0; i < 5; i++){
-        sampleSVG.append("circle")
-        .style("stroke","blue").style("fill","red")
-        .attr("r",15)
-        .attr("cx", state[0][i + 6])
-        .attr("cy", state[0][i + 6])
-    }
-    for(i = 0; i < 3; i++){
-        sampleSVG.append("circle")
-        .style("stroke","white").style("fill","black")
-        .attr("r",15)
-        .attr("cx", state[0][i + 11])
-        .attr("cy", state[0][i + 11])
-    }
-    
-</script>
-<script>
-  $(function() {
-    var timer = null;
-    $( "#slider" ).slider({
-        range: "min",
-      min: 0,
-      max: data.length - 1,
-      value: 0,
-    });
-    $("#slider").on("slidechange", function(event, ui){
-        var state = getState(ui.value);
+        sampleSVG.append("text")
+        .attr("x", state[0][0])
+        .attr("y", state[0][1])
+        .text(state[0][2]/2);
 
-        sampleSVG.selectAll("circle")
-        .data(state)
-        .attr("cx",function(d){ return d[0]; })
-        .attr("cy",function(d){ return d[1]; })
-        .attr("r", function(d, i){
-            if(i == 0)
-                return d[2];
-            else
-                return 15;
-        })
-        .text(function(d, i){
-            if(i == 0)
-                return d[2]/2;
-            else
-                return "";
-        })
-    })
-    $("#start").click(function(){
-        if($(this).attr("value") == "start"){
-            $(this).attr("value", "stop");
-            var sli = $(this);
-            timer = setInterval(function() {
-                var value = $( "#slider" ).slider( "option", "value" );
-                if(value == data.length - 1){
-                    clearInterval(timer);
-                    sli.attr("value", "start");
-                }
-                else
-                    $("#slider").slider("option", "value", value+1);
-            }, 40);
-        }else{
-            $(this).attr("value", "start");
-            clearInterval(timer); 
-
+        var i;
+        for(i = 0; i < 5; i++){
+            sampleSVG.append("circle")
+            .style("stroke","red").style("fill","blue")
+            .attr("r",15)
+            .attr("cx", state[i + 1][0])
+            .attr("cy", state[i + 1][1])
         }
-    })
-});
+        for(i = 0; i < 5; i++){
+            sampleSVG.append("circle")
+            .style("stroke","blue").style("fill","red")
+            .attr("r",15)
+            .attr("cx", state[i + 6][0])
+            .attr("cy", state[i + 6][1])
+        }
+        for(i = 0; i < 3; i++){
+            sampleSVG.append("circle")
+            .style("stroke","white").style("fill","black")
+            .attr("r",15)
+            .attr("cx", state[i + 11][0])
+            .attr("cy", state[i + 11][1])
+        }
+
+    </script>
+    <script>
+      $(function() {
+        var timer = null;
+        $( "#slider" ).slider({
+            range: "min",
+            min: 0,
+            max: data.length - 1,
+            value: 0,
+        });
+        //fill in the list of frames where a shot was made
+        var shot_frames = findShots();
+        for(var i = 0; i < shot_frames.length; i++){
+            $entry = $("<li>"+shot_frames[i]+"</li>");
+            $entry.click(function(){
+                    $("#slider").slider("option", "value", parseInt($(this).html()));
+                })
+                .mouseover(function(){
+                    $(this).css("background-color","lightblue").css("color","white");
+                })
+                .mouseout(function(){
+                    $(this).css("background-color","white").css("color","black");
+                });
+            $("#list").append($entry);
+        }
+        $("#slider").on("slidechange", function(event, ui){
+            var state = getState(ui.value);
+
+            sampleSVG.selectAll("circle")
+            .data(state)
+            .attr("cx",function(d){ return d[0]; })
+            .attr("cy",function(d){ return d[1]; })
+            .attr("r", function(d, i){
+                if(i == 0)
+                    return d[2];
+                else
+                    return 15;
+            })
+            sampleSVG.select("text").data(state)
+            .attr("x", function(d){return d[0];})
+            .attr("y", function(d){return d[1];})
+            .text(function(d,i){
+                if(i == 0){
+                    return d[2]/2
+                }
+            })
+
+        })
+        $("#start").click(function(){
+            if($(this).attr("value") == "start"){
+                $(this).attr("value", "stop");
+                var but = $(this);
+                timer = setInterval(function() {
+                    var value = $( "#slider" ).slider( "option", "value" );
+                    if(value == data.length - 1){
+                        clearInterval(timer);
+                       but.attr("value", "start");
+                    }
+                    else
+                        $("#slider").slider("option", "value", value+1);
+                }, 40);
+            }else{
+                $(this).attr("value", "start");
+                clearInterval(timer); 
+            }
+        })
+
+    });
 </script>
+<style type="text/css" media="screen">
+    #list{
+        width: 100px;
+        height: 500px;
+        overflow: scroll;
+        position: absolute;
+        left: 960px;
+        top: 10px;
+        border: 3px grey solid;
+        list-style-type: none;
+        padding: 0;
+        margin: 0; 
+        background-color: silver;
+    }
+    #list li{
+        margin: 5px;
+        border: 3px black solid;
+        list-style-type: none;
+        background-color: white;
+    }
+    #slider{
+        width: 940px;
+        margin-top: 10px;
+    }
+</style>
 </head>
 <body>
-<div id="slider"></div>
-<input type="button" name="" value="start" id="start">
+    <ul id="list">
+    </ul>
+    <div id="slider" style="width:940px" ></div>
+    <input type="button" name="" value="start" id="start">
 </body>
 </html>
