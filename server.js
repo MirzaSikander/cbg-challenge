@@ -1,4 +1,4 @@
-var port = 8000;
+var port = 80;
 var http = require('http'),
 	app = http.createServer(handler),
  	url = require('url'),
