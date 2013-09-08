@@ -1,0 +1,19 @@
+{
+  "name": "cbg-challenge",
+  "version": "0.0.1",
+  "description": "Basketball data analysis and animation to show when a shot was made",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Basketball",
+    "Animation"
+  ],
+  "author": "Mirza Sikander",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "mime": "~1.2.11"
+  }
+}
